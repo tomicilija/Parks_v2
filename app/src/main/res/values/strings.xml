@@ -5,10 +5,15 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="contact_us">Contact Us</string>
     <string name="google_android_map_api_key">Map API key</string>
-    <string name="title_activity_zacetna">ActivityZacetna</string>
+    <string name="title_activity_zacetna">Parks</string>
     <string name="datum">Datum:</string>
     <string name="mapa">Mapa</string>
     <string name="title_activity_add_location">Add Location</string>
     <string name="title_activity_take_photo">TakePhoto</string>
     <string name="title_activity_location">ActivityLocation</string>
+    <string name="add_new_location_no_location">Za dodajanje mora biti pridobljena lokacija. Preverite pravice!</string>
+    <string name="action_sort">Uredi</string>
+    <string name="permission_must_title">Dodeljevanje pravic</string>
+    <string name="permission_must">Za pravilno delovanje aplikacije so potrebne vse pravice. Dovoljenje za lokacijo je potrebno za pridobivanje lokacije odpadkov, dovoljenje dostopa do slik in shranjevanje je potrebno za dodajanje novih lokacij (slikanje).</string>
+
 </resources>

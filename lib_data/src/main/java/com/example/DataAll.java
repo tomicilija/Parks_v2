@@ -1,22 +1,26 @@
 package com.example;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by crepinsek on 24/02/17.
- */
-
 public class DataAll {
     public static final String LOKACIJA_ID = "lokacija_idXX";
-    public static SimpleDateFormat dt = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+
     //http://stackoverflow.com/questions/4772425/change-date-format-in-a-java-string
-    private TagList tags;
+
     private User userMe;
     private ArrayList<Lokacija> lokacijaList;
     private ArrayList<LokacijaTag> lokacijaTagList;
+
+    public static String getHtmlFormatedLocationTagList(ArrayList<LokacijaTag> l) {
+        StringBuffer sb= new StringBuffer();
+        for (int i=0; i<l.size(); i++) {
+            sb.append(l.get(i).getHtmlFromat());
+            if (i<(l.size()-1)) sb.append(", ");
+        }
+        return sb.toString();
+    }
 
     public Lokacija getLocationByID(String ID) {
         for (Lokacija l: lokacijaList) { //TODO this solution is relatively slow! If possible don't use it!
@@ -28,24 +32,31 @@ public class DataAll {
 
     public DataAll() {
         userMe = new User("neznani.nedolocen@nekje.ne","NiDefiniran");
-        tags = new TagList();
+
         lokacijaList = new ArrayList<>();
         lokacijaTagList = new ArrayList<>();
     }
 
     public Lokacija addLocation(String name, double x, double y, String im) {
-        Lokacija tmp = new Lokacija(name, x,y, userMe.getIdUser(),im,System.currentTimeMillis());
+        if (im==null) im = Lokacija.NODATA;
+        else
+        if (im.trim().length()==0) im = Lokacija.NODATA;
+        Lokacija tmp = new Lokacija(name, x,y, userMe.getIdUser(),im, System.currentTimeMillis());
         lokacijaList.add(tmp);
         return tmp;
     }
     public void addLocationTag(Lokacija l, Tag t) {
-        lokacijaTagList.add(new LokacijaTag(l.id, t.idTag(),System.currentTimeMillis(),userMe.getIdUser()));
+        lokacijaTagList.add(new LokacijaTag(l.id, t, System.currentTimeMillis(),userMe.getIdUser()));
+    }
+
+    public User getUserMe() {
+        return userMe;
     }
 
     @Override
     public String toString() {
         return "DataAll{" +
-                "\ntags=" + tags +
+
                 ", \nuserMe=" + userMe +
                 ", \nlokacijaList=" + lokacijaList +
                 ", \nlokacijaTagList=" + lokacijaTagList +
@@ -55,19 +66,12 @@ public class DataAll {
     public static DataAll scenarijA() {
         DataAll da = new DataAll();
         Date danes = new Date();
-        da.userMe = new User("ilija.tomic@student.um.si","IlijaTOMIC");
+        da.userMe = new User("ilijatomic17@gmail.com","Tomic");
         Lokacija tmp;
-        tmp = da.addLocation("Triglevski narodni park", 22.1212,11.21, "");
-        da.addLocationTag(tmp,da.tags.getPrvi());
-        tmp = da.addLocation("Postojnska jama", 2212212,113121, "slika.png");
-        da.addLocationTag(tmp,da.tags.getPrvi());
-        tmp = da.addLocation("Cerkniško jezero", 3212212,23123121, "");
-        da.addLocationTag(tmp,da.tags.getPrvi());
+        tmp = da.addLocation("Triglavski narodni park", 46.3154, 13.7797, Lokacija.NODATA);
+        tmp = da.addLocation("Cerkinsko jezero", 45.7657, 14.3542, Lokacija.NODATA);
+            tmp = da.addLocation("Soline", 45.4942, 13.6059, Lokacija.NODATA);
 
-       /* for (int i=0; i<130; i++){
-            tmp = da.addLocation("Igrišče "+i, 321*i,231*i, "");
-            da.addLocationTag(tmp,da.tags.getPrvi());
-        }*/
 
         return da;
     }
@@ -80,8 +84,8 @@ public class DataAll {
         return lokacijaList;
     }
 
-    public Lokacija getNewLocation(double d1, double d2) {
-        return addLocation("N/A", d1, d2, "");
+    public Lokacija getNewLocation(double d1, double d2, String filename) {
+        return addLocation(Lokacija.NODATA, d1, d2, filename);
     }
 
     public int getLocationSize() {
@@ -92,8 +96,39 @@ public class DataAll {
         lokacijaList.add(l);
 
     }
+    public void addNewLocationTag(LokacijaTag tag) {
+        lokacijaTagList.add(tag);
+    }
+    public void addNewLocationTags(ArrayList<LokacijaTag> tags) {
+        lokacijaTagList.addAll(tags);
+    }
 
-    public User getUserMe() {
-        return userMe;
+    /*
+    TODO Speed up this simple implementation!
+     */
+    public ArrayList<LokacijaTag> getTagList(String locationId) {
+        ArrayList<LokacijaTag> tags = new ArrayList<>();
+        for (LokacijaTag lt:lokacijaTagList) {
+            if (lt.getIdLokacija().equals(locationId)) {
+                tags.add(lt);
+            }
+        }
+        return  tags;
+    }
+
+    public void removeFromTagList(String locationId) {
+        for (int i=lokacijaTagList.size()-1;i>=0; i--) {
+            if (lokacijaTagList.get(i).getIdLokacija().equals(locationId))
+                lokacijaTagList.remove(i);
+        }
+    }
+
+    public ArrayList<LokacijaTag> getDefultTagLists(ArrayList<Tag> tags, Lokacija l) {
+        ArrayList<LokacijaTag> lt = new ArrayList<>();
+
+        for (Tag t:tags){
+            lt.add(new LokacijaTag(l.getId(),t,System.currentTimeMillis(),userMe.getIdUser()));
+        }
+        return lt;
     }
 }

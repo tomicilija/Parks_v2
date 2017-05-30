@@ -1,12 +1,22 @@
 package com.example;
 
-/**
- * Created by crepinsek on 24/02/17.
- */
 
 public class Tag {
     private String ime;
+    private boolean checked;
 
+    public Tag(Tag t) {
+        ime =t.getIme();
+        checked = t.isChecked();
+    }
+
+    public String getHtmlFromat() {
+        if (checked) {
+            return "<b>"+ime+"<b>";
+        } else {
+            return ime;
+        }
+    }
     public String idTag() {
         return ime;
     }
@@ -17,6 +27,7 @@ public class Tag {
 
     public Tag(String ime) {
         this.ime = ime;
+        checked = false;
     }
 
     @Override
@@ -24,5 +35,17 @@ public class Tag {
         return "Tag{" +
                 "ime='" + ime + '\'' +
                 '}';
+    }
+
+    public String getIme() {
+        return ime;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 }

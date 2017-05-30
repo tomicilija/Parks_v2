@@ -2,10 +2,6 @@ package com.example;
 
 import java.util.UUID;
 
-/**
- * Created by crepinsek on 24/02/17.
- */
-
 public class Lokacija {
     String id;
     String name;

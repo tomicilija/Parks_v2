@@ -1,8 +1,5 @@
 package com.example;
 
-/**
- * Created by crepinsek on 24/02/17.
- */
 
 public class User {
     private String idUser;
